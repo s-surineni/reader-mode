@@ -1,5 +1,6 @@
 export { }
 import  Sample  from "./sample";
+import { Readability } from "@mozilla/readability";
 
 function getPageContent() {
     Sample();
@@ -7,10 +8,12 @@ function getPageContent() {
     // if (selection) {
     //     return selection;
     // }
-
-    // const article = readability.parse();
-    // return { textContent: article.textContent, content: article.content };
-    return { textContent: "Hi", content: "hello" };
+    const readability = new Readability(document.cloneNode(true), {
+        charThreshold: 20,
+    });
+    const article = readability.parse();
+    return { textContent: article.textContent, content: article.content };
+    // return { textContent: "Hi", content: "hello" };
 }
 
 chrome.runtime.onMessage.addListener(async (msg) => {
