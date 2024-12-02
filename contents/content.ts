@@ -1,15 +1,13 @@
 export { }
 import  Sample  from "./sample";
-// import Readability from "readability";
+
 function getPageContent() {
     Sample();
     // const selection = window.getSelection().toString().trim();
     // if (selection) {
     //     return selection;
     // }
-    // const readability = new Readability(document.cloneNode(true), {
-    //     charThreshold: 20,
-    // });
+
     // const article = readability.parse();
     // return { textContent: article.textContent, content: article.content };
     return { textContent: "Hi", content: "hello" };
