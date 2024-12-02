@@ -1,4 +1,12 @@
-export {}
-console.log(
-  "You may find that having is not so pleasing a thing as wanting. This is not logical, but it is often true."
-)
+export { }
+chrome.runtime.onMessage.addListener(async (msg) => {
+    console.log("[BionicReader] Received message:", msg.type);
+    switch (msg.type) {
+        case "reader": {
+            console.log("reader case");
+        }
+        case "default": {
+            console.log("default case");
+        }
+    }
+});
