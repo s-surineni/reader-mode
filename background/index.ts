@@ -9,6 +9,7 @@ startHub()
 
 
 chrome.action.onClicked.addListener((tab) => {
+  console.log("ironman onClicked")
     chrome.tabs.sendMessage(tab.id, {
         type: "reader",
       });

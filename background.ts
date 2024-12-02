@@ -2,6 +2,10 @@ export {}
 console.log("ironman Hello from background script!")
 console.log("ironman messaging")
 
+chrome.action.onClicked.addListener(() => {
+  console.log(`action clicked`)
+})
+
 const handleClick = (tab) => {
     console.log("clicked", tab.id);
     if (!tab.id) throw new Error("tab id not found");
