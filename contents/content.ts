@@ -1,6 +1,9 @@
 export { }
 import  Sample  from "./sample";
 import { Readability } from "@mozilla/readability";
+import {
+    patchDocumentStyle
+} from "./styleChanges";
 
 function getPageContent() {
     Sample();
@@ -20,7 +23,7 @@ chrome.runtime.onMessage.addListener(async (msg) => {
     console.log("ironman [BionicReader] Received message:", msg.type);
     switch (msg.type) {
         case "reader": {
-            toggleReaderMode();
+            // toggleReaderMode();
         }
         case "default": {
             console.log("ironman default case");
@@ -30,6 +33,7 @@ chrome.runtime.onMessage.addListener(async (msg) => {
 
 function toggleReaderMode() {
     console.log("ironman toggleReaderMode");
+    patchDocumentStyle();
     document.body.innerHTML = `
     <html>
 
@@ -38,3 +42,4 @@ function toggleReaderMode() {
     </html>
 `;
 }
+
