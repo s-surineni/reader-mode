@@ -20,9 +20,13 @@ chrome.runtime.onMessage.addListener(async (msg) => {
     console.log("ironman [BionicReader] Received message:", msg.type);
     switch (msg.type) {
         case "reader": {
-            const { content, textContent } = getPageContent();
-            console.log("ironman content:", content);
-            console.log("ironman textContent:", textContent);
+            document.body.innerHTML = `
+            <html>
+
+                <body>You are in reader mode
+                </body>
+            </html>
+      `;
         }
         case "default": {
             console.log("ironman default case");
