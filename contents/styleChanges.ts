@@ -1,4 +1,4 @@
-
+import browser from "webextension-polyfill";
 export function patchDocumentStyle() {
     insertPageViewStyle();
     // insertOverrideRules();
@@ -6,6 +6,8 @@ export function patchDocumentStyle() {
     // contentBlock();
     // insertShareButton();
 }
+export const overrideClassname = "lindylearn-document-override";
+
 function insertPageViewStyle() {
     // set start properties for animation immediately
     document.body.style.width = "100%";
@@ -17,14 +19,21 @@ function insertPageViewStyle() {
 	margin-left 0.3s cubic-bezier(0.16, 1, 0.3, 1),
 	width 0.3s cubic-bezier(0.16, 1, 0.3, 1)`;
 
-    // createStylesheetLink(
-    //     browser.runtime.getURL("/content-script/pageview/content.css")
-    // );
+    createStylesheetLink(
+        browser.runtime.getURL("/contents/content.css")
+    );
 
     // create element of full height of all children, in case body height != content height
     // TODO update this height on page update
     var el = document.createElement("div");
-    // el.className = `${overrideClassname} lindy-body-background`;
+    el.innerHTML = `
+    <html>
+
+        <body>You are in reader mode
+        </body>
+    </html>
+`;
+    el.className = `${overrideClassname} lindy-body-background`;
     el.style.height = `${document.body.scrollHeight}px`;
 
     // const siteBackground = window.getComputedStyle(document.body).background;
@@ -33,4 +42,13 @@ function insertPageViewStyle() {
     //     : siteBackground;
 
     document.body.appendChild(el);
+}
+
+export function createStylesheetLink(url) {
+    var link = document.createElement("link");
+    link.className = overrideClassname;
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    link.href = url;
+    document.head.appendChild(link);
 }
