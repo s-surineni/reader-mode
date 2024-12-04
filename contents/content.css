@@ -1,5 +1,6 @@
 html {
-    background-color: #f1f3f4 !important;
+    background-color: red !important;
+    color: aqua;
     /* background: radial-gradient(
 		rgb(229 231 235) 0px,
 		rgb(243 244 246) 2px
@@ -11,6 +12,8 @@ body {
     /* animation properties are set inline */
 
     position: relative;
+    background-color: aqua;
+    color: green;
 }
 .lindy-body-background {
     position: absolute;

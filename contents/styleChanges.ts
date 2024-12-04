@@ -46,7 +46,7 @@ function insertPageViewStyle() {
 
 export function createStylesheetLink(url) {
     var link = document.createElement("link");
-    link.className = overrideClassname;
+    // link.className = overrideClassname;
     link.type = "text/css";
     link.rel = "stylesheet";
     link.href = url;
