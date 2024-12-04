@@ -33,6 +33,7 @@ chrome.runtime.onMessage.addListener(async (msg) => {
 });
 
 function toggleReaderMode() {
+    document.body.classList.add("pageview");
     console.log("ironman toggleReaderMode");
     // patchDocumentStyle();
     // document.body.classList.add("pageview");
@@ -52,8 +53,3 @@ function toggleReaderMode() {
 // `;
 }
 
-// function addStyles(element, styles) {
-// 	for (id in styles) {
-// 		element.style[id] = styles[id];
-// 	}
-// }

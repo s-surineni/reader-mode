@@ -8,16 +8,43 @@ html {
 	background-size: 25px 25px !important; */
 }
 
-body {
+/* body {
 	width: 60% !important;
 	margin: 20px !important;
 	background-color: white;
-    /* animation properties are set inline */
+
 
     position: relative;
     background-color: aqua;
     color: green;
+} */
+
+body {
+	width: 100%;
+	margin: 0px;
+	/* background: white; */
+
+	filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
+		drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
+
+    background-color: aqua;
+    color: green;
 }
+
+body.pageview {
+	width: 60% !important;
+	margin: 20px !important;
+
+	border-radius: 10px !important;
+	overflow-x: hidden;
+
+	/* easeOutExpo from easings.net */
+	transition: margin 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+		width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        background-color: aqua;
+    color: green;
+}
+
 .lindy-body-background {
     position: absolute;
     top: 0;
