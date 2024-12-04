@@ -9,6 +9,9 @@ html {
 }
 
 body {
+	width: 60% !important;
+	margin: 20px !important;
+	background-color: white;
     /* animation properties are set inline */
 
     position: relative;
@@ -24,43 +27,22 @@ body {
     content: "";
     /* height and background-color set via JS */
 
-    border-radius: 10px;
-    filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
-        drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
+	border-radius: 10px;
+	overflow-x: hidden;
+	filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
+		drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
+	position: relative;
 }
 
-body.pageview {
-    width: 60% !important;
-    margin: 20px auto !important;
-
-    border-radius: 10px !important;
-    overflow-x: hidden !important;
+body * {
+	overflow: hidden;
 }
 
-.lindy-sidebar {
-    position: absolute;
-    top: 0;
-    left: calc(100% + 20px);
-    width: calc(100vw - 100% - 20px - 2 * 20px - 10px);
-    height: 100%;
-}
+.sidebar {
+	position: absolute;
+	top: 0;
+	left: calc(100% + 20px);
+	width: calc(100vw - 100% - 20px - 2 * 20px - 10px);
 
-.share-icon {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-}
-.share-icon img {
-    width: 13px;
-}
-
-@media (prefers-color-scheme: dark) {
-    html {
-        background-color: #202124 !important;
-    }
-
-    .lindy-body-background {
-        filter: drop-shadow(0 10px 8px rgb(255 255 255 / 0.04))
-            drop-shadow(0 4px 3px rgb(255 255 255 / 0.1));
-    }
+	background-color: red;
 }

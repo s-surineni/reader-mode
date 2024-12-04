@@ -2,8 +2,9 @@ export { }
 import  Sample  from "./sample";
 import { Readability } from "@mozilla/readability";
 import {
-    patchDocumentStyle
+    patchDocumentStyle, createStylesheetLink
 } from "./styleChanges";
+import browser from "webextension-polyfill";
 
 function getPageContent() {
     Sample();
@@ -33,7 +34,15 @@ chrome.runtime.onMessage.addListener(async (msg) => {
 
 function toggleReaderMode() {
     console.log("ironman toggleReaderMode");
-    patchDocumentStyle();
+    // patchDocumentStyle();
+    // document.body.classList.add("pageview");
+    createStylesheetLink(
+        browser.runtime.getURL("/contents/content.css")
+    );
+    const notice = document.createElement("div");
+	notice.innerHTML = "Sidebar";
+	document.body.append(notice);
+	notice.className = "sidebar";
 //     document.body.innerHTML = `
 //     <html>
 
@@ -43,3 +52,8 @@ function toggleReaderMode() {
 // `;
 }
 
+// function addStyles(element, styles) {
+// 	for (id in styles) {
+// 		element.style[id] = styles[id];
+// 	}
+// }

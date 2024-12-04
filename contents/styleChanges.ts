@@ -1,9 +1,13 @@
 import browser from "webextension-polyfill";
-export function patchDocumentStyle() {
-    insertPageViewStyle();
-    // insertOverrideRules();
+import { contentBlock, unContentBlock } from "./contentBlock";
+import { insertOverrideRules, removeOverrideRules } from "./mediaQuery";
 
-    // contentBlock();
+export function patchDocumentStyle() {
+    console.log("ironman patchDocumentStyle");
+    insertPageViewStyle();
+    insertOverrideRules();
+
+    contentBlock();
     // insertShareButton();
 }
 export const overrideClassname = "lindylearn-document-override";
@@ -45,10 +49,20 @@ function insertPageViewStyle() {
 }
 
 export function createStylesheetLink(url) {
+    console.log("ironman createStylesheetLink", url);
     var link = document.createElement("link");
     // link.className = overrideClassname;
     link.type = "text/css";
     link.rel = "stylesheet";
     link.href = url;
     document.head.appendChild(link);
+}
+
+export function createStylesheetText(text) {
+    var style = document.createElement("style");
+    style.className = overrideClassname;
+    style.type = "text/css";
+    style.rel = "stylesheet";
+    style.innerHTML = text;
+    document.head.appendChild(style);
 }
