@@ -32,11 +32,9 @@ chrome.runtime.onMessage.addListener(async (msg) => {
     }
 });
 
-function toggleReaderMode() {
+function addSidebar() {
     document.body.classList.add("pageview");
     console.log("ironman toggleReaderMode");
-    // patchDocumentStyle();
-    // document.body.classList.add("pageview");
     createStylesheetLink(
         browser.runtime.getURL("/contents/content.css")
     );
@@ -44,6 +42,21 @@ function toggleReaderMode() {
 	notice.innerHTML = "Sidebar";
 	document.body.append(notice);
 	notice.className = "sidebar";
+}
+
+function toggleReaderMode() {
+    const existingSidebar = document.getElementById(
+		"lindylearn-annotations-sidebar"
+	);
+	if (!existingSidebar) {
+		injectSidebar();
+	} else {
+		destroySidebar(existingSidebar);
+	}
+
+    // patchDocumentStyle();
+    // document.body.classList.add("pageview");
+
 //     document.body.innerHTML = `
 //     <html>
 
@@ -53,3 +66,27 @@ function toggleReaderMode() {
 // `;
 }
 
+function injectSidebar() {
+	document.body.classList.add("pageview");
+    ////////////////////////////////////
+
+    createStylesheetLink(
+        browser.runtime.getURL("/contents/content.css")
+    );
+    ////////////////////////////////////
+	const sidebarIframe = document.createElement("iframe");
+	// sidebarIframe.src =
+	// 	"https://lostechies.com/derekgreer/2017/05/25/hello-react-a-beginners-setup-tutorial/";
+	sidebarIframe.className = "sidebar";
+	sidebarIframe.setAttribute("id", "lindylearn-annotations-sidebar");
+	sidebarIframe.setAttribute("scrolling", "no");
+	sidebarIframe.setAttribute("frameBorder", "0");
+
+	document.body.append(sidebarIframe);
+}
+
+function destroySidebar(existingSidebar) {
+	document.body.classList.remove("pageview");
+
+	existingSidebar.parentNode.removeChild(existingSidebar);
+}
