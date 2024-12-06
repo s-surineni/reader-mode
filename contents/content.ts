@@ -75,6 +75,7 @@ function injectSidebar() {
     );
     ////////////////////////////////////
     const sidebarIframe = document.createElement("iframe");
+    sidebarIframe.src = browser.runtime.getURL("/contents/index.html");
     // sidebarIframe.src =
     // 	"https://lostechies.com/derekgreer/2017/05/25/hello-react-a-beginners-setup-tutorial/";
     sidebarIframe.className = "sidebar";
@@ -82,14 +83,7 @@ function injectSidebar() {
     sidebarIframe.setAttribute("scrolling", "no");
     sidebarIframe.setAttribute("frameBorder", "0");
 
-    sidebarIframe.onload = function () {
-        var doc = sidebarIframe.contentDocument || sidebarIframe.contentWindow.document;
-        var div = document.createElement('div');
-        div.setAttribute('class', 'sidebar-div');
-        div.innerText = 'This is a div inside the iframe!';
-        div.style.border = '1px solid red';
-        div.style.padding = '10px'; doc.body.appendChild(div);
-    };
+
     document.body.append(sidebarIframe);
 }
 
