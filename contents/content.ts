@@ -1,5 +1,5 @@
 export { }
-import  Sample  from "./sample";
+import Sample from "./sample";
 import { Readability } from "@mozilla/readability";
 import {
     patchDocumentStyle, createStylesheetLink
@@ -39,54 +39,62 @@ function addSidebar() {
         browser.runtime.getURL("/contents/content.css")
     );
     const notice = document.createElement("div");
-	notice.innerHTML = "Sidebar";
-	document.body.append(notice);
-	notice.className = "sidebar";
+    notice.innerHTML = "Sidebar";
+    document.body.append(notice);
+    notice.className = "sidebar";
 }
 
 function toggleReaderMode() {
     const existingSidebar = document.getElementById(
-		"lindylearn-annotations-sidebar"
-	);
-	if (!existingSidebar) {
-		injectSidebar();
-	} else {
-		destroySidebar(existingSidebar);
-	}
+        "lindylearn-annotations-sidebar"
+    );
+    if (!existingSidebar) {
+        injectSidebar();
+    } else {
+        destroySidebar(existingSidebar);
+    }
 
     // patchDocumentStyle();
     // document.body.classList.add("pageview");
 
-//     document.body.innerHTML = `
-//     <html>
+    //     document.body.innerHTML = `
+    //     <html>
 
-//         <body>You are in reader mode
-//         </body>
-//     </html>
-// `;
+    //         <body>You are in reader mode
+    //         </body>
+    //     </html>
+    // `;
 }
 
 function injectSidebar() {
-	document.body.classList.add("pageview");
+    document.body.classList.add("pageview");
     ////////////////////////////////////
 
     createStylesheetLink(
         browser.runtime.getURL("/contents/content.css")
     );
     ////////////////////////////////////
-	const sidebarIframe = document.createElement("iframe");
-	// sidebarIframe.src =
-	// 	"https://lostechies.com/derekgreer/2017/05/25/hello-react-a-beginners-setup-tutorial/";
-	sidebarIframe.className = "sidebar";
-	sidebarIframe.setAttribute("id", "lindylearn-annotations-sidebar");
-	sidebarIframe.setAttribute("scrolling", "no");
-	sidebarIframe.setAttribute("frameBorder", "0");
+    const sidebarIframe = document.createElement("iframe");
+    // sidebarIframe.src =
+    // 	"https://lostechies.com/derekgreer/2017/05/25/hello-react-a-beginners-setup-tutorial/";
+    sidebarIframe.className = "sidebar";
+    sidebarIframe.setAttribute("id", "lindylearn-annotations-sidebar");
+    sidebarIframe.setAttribute("scrolling", "no");
+    sidebarIframe.setAttribute("frameBorder", "0");
 
-	document.body.append(sidebarIframe);
+    sidebarIframe.onload = function () {
+        var doc = sidebarIframe.contentDocument || sidebarIframe.contentWindow.document;
+        var div = document.createElement('div');
+        div.setAttribute('class', 'sidebar-div');
+        div.innerText = 'This is a div inside the iframe!';
+        div.style.border = '1px solid red';
+        div.style.padding = '10px'; doc.body.appendChild(div);
+    };
+    document.body.append(sidebarIframe);
 }
 
 function destroySidebar(existingSidebar) {
-	document.body.classList.remove("pageview");
+    document.body.classList.remove("pageview");
 
-	existingSidebar.parentNode.removeChild(existingSidebar);
+    existingSidebar.parentNode.removeChild(existingSidebar);
 }

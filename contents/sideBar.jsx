@@ -1,7 +1,9 @@
 
-export const getInlineAnchor = () =>
-  document.querySelector(`body`)
+// export const getInlineAnchor = () =>
+//   document.querySelector(`.pageview`)
+// document.querySelector(`.sidebar-div`)
 
+export const getRootContainer = () => document.querySelector(".sidebar-div")
 // Use this to optimize unmount lookups
 export const getShadowHostId = () => "plasmo-inline-example-unique-id"
 
