@@ -34,3 +34,9 @@ function insertOverrideRules(document) {
     link.href = url;
     document.head.appendChild(link);
 }
+
+export function unBeautifyDocument(document) {
+	document
+		.querySelectorAll('.pageview-media-override')
+		.forEach((e) => e.remove());
+}

@@ -54,6 +54,7 @@ function toggleReaderMode() {
         beautifyDocument(document);
     } else {
         destroySidebar(existingSidebar);
+        unBeautifyDocument(document);
     }
 
     // patchDocumentStyle();
