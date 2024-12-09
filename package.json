@@ -42,7 +42,8 @@
       {
         "resources": [
           "contents/content.css",
-          "contents/index.html"
+          "contents/index.html",
+          "contents/pageview/index.css"
         ],
         "matches": [
           "https://*/*"

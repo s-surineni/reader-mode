@@ -5,6 +5,7 @@ import {
     patchDocumentStyle, createStylesheetLink
 } from "./styleChanges";
 import browser from "webextension-polyfill";
+import { beautifyDocument, unBeautifyDocument } from "./pageview/patching";
 
 function getPageContent() {
     Sample();
@@ -50,6 +51,7 @@ function toggleReaderMode() {
     );
     if (!existingSidebar) {
         injectSidebar();
+        beautifyDocument(document);
     } else {
         destroySidebar(existingSidebar);
     }
