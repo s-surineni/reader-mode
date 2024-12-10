@@ -53,8 +53,8 @@ function createStylesheetLink(url) {
 	document.head.appendChild(link);
 }
 
-export function unPatchDocument(document) {
+export function unPatchDocument() {
 	document
-		.querySelectorAll('.pageview-media-override')
+		.querySelectorAll(`.${overrideClassname}`)
 		.forEach((e) => e.remove());
 }

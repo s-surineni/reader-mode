@@ -24,7 +24,7 @@ function toggleReaderMode() {
         document.body.classList.add('pageview');
     } else {
         destroySidebar();
-        unPatchDocument(document);
+        unPatchDocument();
         document.body.classList.remove('pageview');
     }
 }
