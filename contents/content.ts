@@ -1,11 +1,33 @@
 export { }
 import Sample from "./sample";
 import { Readability } from "@mozilla/readability";
-import {
-    patchDocumentStyle, createStylesheetLink
-} from "./styleChanges";
 import browser from "webextension-polyfill";
-import { beautifyDocument, unBeautifyDocument } from "./pageview/patching";
+import { patchDocument, unPatchDocument } from "./pageview/patching";
+
+chrome.runtime.onMessage.addListener(async (msg) => {
+    console.log("ironman  Received message:", msg.type);
+    switch (msg.type) {
+        case "reader": {
+            toggleReaderMode();
+        }
+        case "default": {
+            console.log("ironman default case");
+        }
+    }
+});
+
+
+function toggleReaderMode() {
+	if (!document.body.classList.contains('pageview')) {
+        injectSidebar();
+        patchDocument();
+        document.body.classList.add('pageview');
+    } else {
+        destroySidebar();
+        unPatchDocument(document);
+        document.body.classList.remove('pageview');
+    }
+}
 
 function getPageContent() {
     Sample();
@@ -21,62 +43,8 @@ function getPageContent() {
     // return { textContent: "Hi", content: "hello" };
 }
 
-chrome.runtime.onMessage.addListener(async (msg) => {
-    console.log("ironman [BionicReader] Received message:", msg.type);
-    switch (msg.type) {
-        case "reader": {
-            toggleReaderMode();
-        }
-        case "default": {
-            console.log("ironman default case");
-        }
-    }
-});
-
-function addSidebar() {
-    document.body.classList.add("pageview");
-    console.log("ironman toggleReaderMode");
-    createStylesheetLink(
-        browser.runtime.getURL("/contents/content.css")
-    );
-    const notice = document.createElement("div");
-    notice.innerHTML = "Sidebar";
-    document.body.append(notice);
-    notice.className = "sidebar";
-}
-
-function toggleReaderMode() {
-    const existingSidebar = document.getElementById(
-        "lindylearn-annotations-sidebar"
-    );
-    if (!existingSidebar) {
-        injectSidebar();
-        beautifyDocument(document);
-    } else {
-        destroySidebar(existingSidebar);
-        unBeautifyDocument(document);
-    }
-
-    // patchDocumentStyle();
-    // document.body.classList.add("pageview");
-
-    //     document.body.innerHTML = `
-    //     <html>
-
-    //         <body>You are in reader mode
-    //         </body>
-    //     </html>
-    // `;
-}
 
 function injectSidebar() {
-    document.body.classList.add("pageview");
-    ////////////////////////////////////
-
-    createStylesheetLink(
-        browser.runtime.getURL("/contents/content.css")
-    );
-    ////////////////////////////////////
     const sidebarIframe = document.createElement("iframe");
     sidebarIframe.src = browser.runtime.getURL("/contents/index.html");
     // sidebarIframe.src =
@@ -90,8 +58,9 @@ function injectSidebar() {
     document.body.append(sidebarIframe);
 }
 
-function destroySidebar(existingSidebar) {
-    document.body.classList.remove("pageview");
-
+function destroySidebar() {
+    const existingSidebar = document.getElementById(
+		'lindylearn-annotations-sidebar'
+	);
     existingSidebar.parentNode.removeChild(existingSidebar);
 }

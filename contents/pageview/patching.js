@@ -1,8 +1,17 @@
 import browser from "webextension-polyfill";
-export function beautifyDocument(document) {
+// adds css files
+export function patchDocument() {
 	// patchMediaRules(document);
+	insertPageViewStyle();
+	insertOverrideRules();
+}
 
-	insertOverrideRules(document);
+function insertPageViewStyle() {
+	// set start properties for animation immediately
+	document.body.style.width = '100%';
+	document.body.style.magin = '0';
+
+	createStylesheetLink(browser.runtime.getURL('/contents/pageview/content.css'));
 }
 
 function insertOverrideRules(document) {
@@ -27,15 +36,24 @@ function insertOverrideRules(document) {
     */
    console.log('ironman beautifydoc');
     const url = browser.runtime.getURL("/contents/pageview/index.css")
-    var link = document.createElement('link');
-    link.className = 'pageview-media-override';
-    link.type = 'text/css';
-    link.rel = 'stylesheet';
-    link.href = url;
-    document.head.appendChild(link);
+	const cssUrls = [url]
+	cssUrls.map((url) => {
+		createStylesheetLink(url);
+	})
+}
+const overrideClassname = 'lindylearn-document-override';
+
+function createStylesheetLink(url) {
+	var link = document.createElement('link');
+	link.className = overrideClassname;
+	link.type = 'text/css';
+	link.rel = 'stylesheet';
+	link.href = url;
+	// link.crossOrigin = 'anonymous';
+	document.head.appendChild(link);
 }
 
-export function unBeautifyDocument(document) {
+export function unPatchDocument(document) {
 	document
 		.querySelectorAll('.pageview-media-override')
 		.forEach((e) => e.remove());

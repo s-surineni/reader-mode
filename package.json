@@ -41,7 +41,7 @@
     "web_accessible_resources": [
       {
         "resources": [
-          "contents/content.css",
+          "contents/pageview/content.css",
           "contents/index.html",
           "contents/pageview/index.css"
         ],
