@@ -16,6 +16,15 @@ function insertPageViewStyle() {
 	margin-left 0.3s cubic-bezier(0.16, 1, 0.3, 1),
 	width 0.3s cubic-bezier(0.16, 1, 0.3, 1)`;
 	createStylesheetLink(browser.runtime.getURL('/contents/pageview/content.css'));
+	var el = document.createElement('div');
+	el.className = `${overrideClassname} body-background`;
+	el.style.height = `${document.body.scrollHeight}px`;
+	const siteBodyColor = window.getComputedStyle(
+		document.body
+	).backgroundColor;
+	el.style.backgroundColor =
+		siteBodyColor === 'rgba(0, 0, 0, 0)' ? 'white' : siteBodyColor;
+	document.body.appendChild(el);
 }
 
 function insertOverrideRules(document) {

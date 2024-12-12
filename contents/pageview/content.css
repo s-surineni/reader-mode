@@ -20,11 +20,11 @@ html {
 } */
 
 body {
-	/* background: white; */
 
-	filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
+
+	filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
+	drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
 	/* easeOutExpo from easings.net */
-	background-color: aqua;
 	color: green;
 }
 
@@ -40,6 +40,16 @@ body.pageview {
 	color: green;
 }
 
+.body-background {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+
+	z-index: -100;
+	content: '';
+}
+
 .lindy-body-background {
 	position: absolute;
 	top: 0;
@@ -53,10 +63,6 @@ body.pageview {
 	overflow-x: hidden;
 	filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
 	position: relative;
-}
-
-body * {
-	overflow: hidden;
 }
 
 .sidebar {
