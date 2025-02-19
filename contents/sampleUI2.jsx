@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 
 export const config = {
-    matches: ["<all_urls>"],
+    matches: ["https://s-surineni.github.io/"],
     all_frames: true
 }
 
@@ -12,7 +12,7 @@ const CustomButton = () => {
         iframe.name = "delta-flyer"
         document.body.appendChild(iframe)
     }, [])
-    return <button>Custom button2222222</button>
+    return <div></div>
 }
 
 export default CustomButton
