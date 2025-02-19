@@ -8,7 +8,7 @@ export const config = {
 const CustomButton = () => {
     useEffect(() => {
         const iframe = document.createElement("iframe")
-        iframe.src = "<div>Hello</div>"
+        iframe.src = chrome.runtime.getURL("/delta-flyer.html")
         iframe.name = "delta-flyer"
         document.body.appendChild(iframe)
     }, [])
