@@ -1,16 +1,21 @@
 import browser from "webextension-polyfill";
-import { contentBlock, unContentBlock } from "./contentBlock";
 import { insertOverrideRules, removeOverrideRules } from "./mediaQuery";
+export const OVERRIDE_CLASSNAME = "rmode-document-override";
 
 export function patchDocumentStyle() {
-    console.log("ironman patchDocumentStyle");
     insertPageViewStyle();
     insertOverrideRules();
-
-    contentBlock();
-    // insertShareButton();
 }
-export const overrideClassname = "lindylearn-document-override";
+
+export function unPatchDocumentStyle() {
+    // this removes most modifications
+    document
+        .querySelectorAll(`.${OVERRIDE_CLASSNAME}`)
+        .forEach((e) => e.remove());
+
+    removeOverrideRules();
+}
+
 
 function insertPageViewStyle() {
     // set start properties for animation immediately
@@ -30,39 +35,20 @@ function insertPageViewStyle() {
     // create element of full height of all children, in case body height != content height
     // TODO update this height on page update
     var el = document.createElement("div");
-    el.innerHTML = `
-    <html>
-
-        <body>You are in reader mode
-        </body>
-    </html>
-`;
-    el.className = `${overrideClassname} lindy-body-background`;
+    el.className = `${OVERRIDE_CLASSNAME} rmode-body-background`;
     el.style.height = `${document.body.scrollHeight}px`;
-
-    // const siteBackground = window.getComputedStyle(document.body).background;
-    // el.style.background = siteBackground.includes("rgba(0, 0, 0, 0)")
-    //     ? "white"
-    //     : siteBackground;
-
+    const siteBackground = window.getComputedStyle(document.body).background;
+    el.style.background = siteBackground.includes("rgba(0, 0, 0, 0)")
+        ? "white"
+        : siteBackground;
     document.body.appendChild(el);
 }
 
 export function createStylesheetLink(url) {
-    console.log("ironman createStylesheetLink", url);
     var link = document.createElement("link");
-    // link.className = overrideClassname;
     link.type = "text/css";
     link.rel = "stylesheet";
     link.href = url;
     document.head.appendChild(link);
 }
 
-export function createStylesheetText(text) {
-    var style = document.createElement("style");
-    style.className = overrideClassname;
-    style.type = "text/css";
-    style.rel = "stylesheet";
-    style.innerHTML = text;
-    document.head.appendChild(style);
-}

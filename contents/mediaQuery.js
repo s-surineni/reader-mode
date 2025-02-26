@@ -1,7 +1,7 @@
 import { getCssOverride } from "./cssTweaks";
 import { 
     // createStylesheetText, 
-    overrideClassname 
+    OVERRIDE_CLASSNAME 
 } from "./styleChanges";
 
 // insert styles that adjust media query CSS to the reduced page width
@@ -9,7 +9,7 @@ export function insertOverrideRules() {
     console.log('ironman insertOverrideRules');
     const cssElems = [...document.getElementsByTagName("link")].filter(
         (elem) =>
-            elem.rel === "stylesheet" && elem.className !== overrideClassname
+            elem.rel === "stylesheet" && elem.className !== OVERRIDE_CLASSNAME
     );
 
     cssElems.forEach(async (elem) => {

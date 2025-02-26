@@ -2,7 +2,7 @@ export { }
 import Sample from "./sample";
 import { Readability } from "@mozilla/readability";
 import browser from "webextension-polyfill";
-import { patchDocument, unPatchDocument } from "./pageview/patching";
+import { patchDocumentStyle, unPatchDocumentStyle } from "./styleChanges";
 
 chrome.runtime.onMessage.addListener(async (msg) => {
     console.log("ironman  Received message:", msg.type);
@@ -19,28 +19,14 @@ chrome.runtime.onMessage.addListener(async (msg) => {
 
 function toggleReaderMode() {
 	if (!document.body.classList.contains('pageview')) {
-        injectSidebar();
-        patchDocument();
+        patchDocumentStyle();
+        // injectSidebar();
         document.body.classList.add('pageview');
     } else {
-        destroySidebar();
-        unPatchDocument();
         document.body.classList.remove('pageview');
+        unPatchDocumentStyle();
+        // destroySidebar();
     }
-}
-
-function getPageContent() {
-    Sample();
-    // const selection = window.getSelection().toString().trim();
-    // if (selection) {
-    //     return selection;
-    // }
-    const readability = new Readability(document.cloneNode(true), {
-        charThreshold: 20,
-    });
-    const article = readability.parse();
-    return { textContent: article.textContent, content: article.content };
-    // return { textContent: "Hi", content: "hello" };
 }
 
 
