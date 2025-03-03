@@ -1,12 +1,10 @@
 import { getCssOverride } from "./cssTweaks";
 import { 
-    // createStylesheetText, 
     OVERRIDE_CLASSNAME 
 } from "./styleChanges";
 
 // insert styles that adjust media query CSS to the reduced page width
 export function insertOverrideRules() {
-    console.log('ironman insertOverrideRules');
     const cssElems = [...document.getElementsByTagName("link")].filter(
         (elem) =>
             elem.rel === "stylesheet" && elem.className !== OVERRIDE_CLASSNAME
@@ -18,7 +16,7 @@ export function insertOverrideRules() {
         try {
             const overrideCss = await getCssOverride(url, 1 / 0.6);
 
-            // createStylesheetText(overrideCss);
+            createStylesheetText(overrideCss);
             disableStylesheet(elem);
         } catch (err) {
             console.error(`Error patching CSS file ${url}:`, err);
@@ -40,4 +38,13 @@ function reenableOriginalStylesheets() {
         elem.classList.remove(disabledClassname);
         elem.disabled = false;
     });
+}
+
+export function createStylesheetText(text) {
+    var style = document.createElement("style");
+    style.className = overrideClassname;
+    style.type = "text/css";
+    style.rel = "stylesheet";
+    style.innerHTML = text;
+    document.head.appendChild(style);
 }

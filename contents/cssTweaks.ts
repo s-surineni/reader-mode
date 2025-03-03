@@ -12,7 +12,7 @@ export async function getCssOverride(
 ): Promise<string> {
     // Fetch CSS of the active tab
     const response = await axios.get(
-        `${proxyUrl}/${cssUrl.replaceAll("//", "/")}`,
+        `${proxyUrl}/${cssUrl.replace("//", "/")}`,
         {
             responseType: "blob",
         }
@@ -56,7 +56,7 @@ export async function getCssOverride(
         .map((rule) => modifyRulesText(rule, cssUrl))
         .join("\n\n");
 
-    // console.log(cssUrl, newText);
+    console.log(cssUrl, newText);
 
     // construct one override document per CSS document
     return newText;
@@ -105,23 +105,13 @@ function modifyRulesText(text, cssUrl) {
     // use absolute paths for files referenced via url()
     // those paths are relative to the stylesheet url, which we change
     for (const match of text.matchAll(
-        /url\((?!"?'?(?:data:|#|https?:\/\/))"?'?([^\)]*?)"?'?\)/g
+        /url\((?!"?'?(?:data:|#|https?:\/\/))"?'?([^\)]*)"?'?\)/g
     )) {
         const url = match[1];
 
         const absoluteUrl = new URL(url, cssUrl);
         text = text.replace(url, absoluteUrl.href);
     }
-
-    // hide fixed and sticky positioned elements (highly unlikely to be part of the text)
-    text = text.replaceAll(
-        /position:\s?fixed/g,
-        "position: fixed; display: none !important"
-    );
-    text = text.replaceAll(
-        /position:\s?sticky/g,
-        "position: sticky; display: none !important"
-    );
 
     return text;
 }
