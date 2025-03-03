@@ -1,5 +1,6 @@
 import { getCssOverride } from "./cssTweaks";
 import { 
+    createStylesheetText,
     OVERRIDE_CLASSNAME 
 } from "./styleChanges";
 
@@ -40,11 +41,4 @@ function reenableOriginalStylesheets() {
     });
 }
 
-export function createStylesheetText(text) {
-    var style = document.createElement("style");
-    style.className = overrideClassname;
-    style.type = "text/css";
-    style.rel = "stylesheet";
-    style.innerHTML = text;
-    document.head.appendChild(style);
-}
+

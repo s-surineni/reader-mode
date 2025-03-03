@@ -1,4 +1,4 @@
-// import { createStylesheetText } from "./styleChanges";
+import { createStylesheetText } from "./styleChanges";
 
 // hide page elements unrelated to the article
 export function contentBlock() {
@@ -12,34 +12,30 @@ export function contentBlock() {
         .concat(idSelectors)
         .concat(roleSelectors);
     const css = `${selectors.join(", ")} { display: none !important; }`;
-    console.log('ironman css', JSON.stringify(css));
-    // createStylesheetText(css);
+
+    createStylesheetText(css);
 }
 
 // inserted stylesheets are already removed elsewhere
 export function unContentBlock() {}
 
-const blockedTags = [
-    "footer",
-    //  "aside", 
-    //  "nav"
-];
+const blockedTags = ["footer", "aside", "nav"];
 const blockedWords = [
     "masthead",
     "banner",
     "menu",
     // "sidebar",
-    // "footer",
-    // "comments",
-    // "related",
-    // "recommendation",
-    // "social",
-    // "popular",
-    // "promo",
-    // "overlay",
-    // "login",
-    // "registration",
-    // "modal",
-    // "cookie",
-    // "consent",
+    "footer",
+    "comments",
+    "related",
+    "recommendation",
+    "social",
+    "popular",
+    "promo",
+    "overlay",
+    "login",
+    "registration",
+    "modal",
+    "cookie",
+    "consent",
 ];

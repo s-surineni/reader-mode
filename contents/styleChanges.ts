@@ -1,10 +1,13 @@
 import browser from "webextension-polyfill";
 import { insertOverrideRules, removeOverrideRules } from "./mediaQuery";
+import { contentBlock, unContentBlock } from "./contentBlock";
+
 export const OVERRIDE_CLASSNAME = "rmode-document-override";
 
 export function patchDocumentStyle() {
     insertPageViewStyle();
     insertOverrideRules();
+    contentBlock();
 }
 
 export function unPatchDocumentStyle() {
@@ -14,6 +17,7 @@ export function unPatchDocumentStyle() {
         .forEach((e) => e.remove());
 
     removeOverrideRules();
+    unContentBlock();
 }
 
 
@@ -37,10 +41,10 @@ function insertPageViewStyle() {
     var el = document.createElement("div");
     el.className = `${OVERRIDE_CLASSNAME} rmode-body-background`;
     el.style.height = `${document.body.scrollHeight}px`;
-    const siteBackground = window.getComputedStyle(document.body).background;
-    el.style.background = siteBackground.includes("rgba(0, 0, 0, 0)")
-        ? "white"
-        : siteBackground;
+    // const siteBackground = window.getComputedStyle(document.body).background;
+    // el.style.background = siteBackground.includes("rgba(0, 0, 0, 0)")
+    //     ? "white"
+    //     : siteBackground;
     document.body.appendChild(el);
 }
 
@@ -52,3 +56,11 @@ export function createStylesheetLink(url) {
     document.head.appendChild(link);
 }
 
+export function createStylesheetText(text) {
+    var style = document.createElement("style");
+    style.className = OVERRIDE_CLASSNAME;
+    style.type = "text/css";
+    style.rel = "stylesheet";
+    style.innerHTML = text;
+    document.head.appendChild(style);
+}

@@ -12,7 +12,7 @@ export async function getCssOverride(
 ): Promise<string> {
     // Fetch CSS of the active tab
     const response = await axios.get(
-        `${proxyUrl}/${cssUrl.replace("//", "/")}`,
+        `${proxyUrl}/${cssUrl.replaceAll("//", "/")}`,
         {
             responseType: "blob",
         }
@@ -105,7 +105,7 @@ function modifyRulesText(text, cssUrl) {
     // use absolute paths for files referenced via url()
     // those paths are relative to the stylesheet url, which we change
     for (const match of text.matchAll(
-        /url\((?!"?'?(?:data:|#|https?:\/\/))"?'?([^\)]*)"?'?\)/g
+        /url\((?!"?'?(?:data:|#|https?:\/\/))"?'?([^\)]*?)"?'?\)/g
     )) {
         const url = match[1];
 
@@ -123,6 +123,6 @@ function modifyRulesText(text, cssUrl) {
         /position:\s?sticky/g,
         "position: sticky; display: none !important"
     );
-    
+
     return text;
 }
