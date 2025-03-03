@@ -113,5 +113,16 @@ function modifyRulesText(text, cssUrl) {
         text = text.replace(url, absoluteUrl.href);
     }
 
+
+    // hide fixed and sticky positioned elements (highly unlikely to be part of the text)
+    text = text.replaceAll(
+        /position:\s?fixed/g,
+        "position: fixed; display: none !important"
+    );
+    text = text.replaceAll(
+        /position:\s?sticky/g,
+        "position: sticky; display: none !important"
+    );
+    
     return text;
 }
