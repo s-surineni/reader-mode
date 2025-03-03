@@ -14,7 +14,7 @@ export function insertOverrideRules() {
         const url = elem.href;
         // console.log(url);
         try {
-            const overrideCss = await getCssOverride(url, 1 / 0.6);
+            const overrideCss = await getCssOverride(url, 1 / 0.5);
 
             createStylesheetText(overrideCss);
             disableStylesheet(elem);
