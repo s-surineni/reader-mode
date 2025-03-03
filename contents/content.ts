@@ -17,16 +17,45 @@ chrome.runtime.onMessage.addListener(async (msg) => {
 });
 
 
-function toggleReaderMode() {
-	if (!document.body.classList.contains('pageview')) {
-        patchDocumentStyle();
-        // injectSidebar();
-        document.body.classList.add('pageview');
+async function toggleReaderMode() {
+    const isInPageView = document.body.classList.contains("pageview");
+    if (!isInPageView) {
+        await enableReaderMode();
     } else {
-        document.body.classList.remove('pageview');
-        unPatchDocumentStyle();
-        // destroySidebar();
+        await disableReaderMode();
     }
+}
+
+async function enableReaderMode() {
+    patchDocumentStyle();
+    // const sidebarIframe = injectSidebar();
+
+    // listen and react to annotation events from the sidebar iframe
+    // createAnnotationListener(sidebarIframe);
+    // createSelectionListener(sidebarIframe);
+
+    // make visible once set up
+    document.body.classList.add("pageview");
+
+    // allow exiting pageview by clicking on background surrounding pageview (bare <html>)
+    document.onclick = (event) => {
+        if (event.target.tagName === "HTML") {
+            toggleReaderMode();
+        }
+    };
+}
+async function disableReaderMode() {
+    // disable page view exiting
+    document.onclick = null;
+
+    // immediately hide
+    document.body.classList.remove("pageview");
+
+    unPatchDocumentStyle();
+    // removeSidebar();
+
+    // removeAnnotationListener();
+    // removeSelectionListener();
 }
 
 

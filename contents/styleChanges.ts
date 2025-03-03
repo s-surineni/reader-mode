@@ -38,14 +38,14 @@ function insertPageViewStyle() {
 
     // create element of full height of all children, in case body height != content height
     // TODO update this height on page update
-    var el = document.createElement("div");
-    el.className = `${OVERRIDE_CLASSNAME} rmode-body-background`;
-    el.style.height = `${document.body.scrollHeight}px`;
+    var background = document.createElement("div");
+    background.className = `${OVERRIDE_CLASSNAME} rmode-body-background`;
+    background.style.height = `${document.body.scrollHeight}px`;
     // const siteBackground = window.getComputedStyle(document.body).background;
     // el.style.background = siteBackground.includes("rgba(0, 0, 0, 0)")
     //     ? "white"
     //     : siteBackground;
-    document.body.appendChild(el);
+    document.body.appendChild(background);
 }
 
 export function createStylesheetLink(url) {
@@ -59,8 +59,6 @@ export function createStylesheetLink(url) {
 export function createStylesheetText(text) {
     var style = document.createElement("style");
     style.className = OVERRIDE_CLASSNAME;
-    style.type = "text/css";
-    style.rel = "stylesheet";
     style.innerHTML = text;
     document.head.appendChild(style);
 }
