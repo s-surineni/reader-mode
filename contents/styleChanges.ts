@@ -11,13 +11,15 @@ export function patchDocumentStyle() {
     contentBlock();
 }
 
-export function unPatchDocumentStyle() {
+export async function unPatchDocumentStyle() {
+    removeOverrideRules();
+    await new Promise((resolve, _) => setTimeout(resolve, 0));
     // this removes most modifications
     document
         .querySelectorAll(`.${OVERRIDE_CLASSNAME}`)
         .forEach((e) => e.remove());
 
-    removeOverrideRules();
+
     unContentBlock();
 }
 
@@ -32,6 +34,13 @@ function insertPageViewStyle() {
     document.body.style.transition = `margin-top 0.15s cubic-bezier(0.16, 1, 0.3, 1),
 	margin-left 0.3s cubic-bezier(0.16, 1, 0.3, 1),
 	width 0.3s cubic-bezier(0.16, 1, 0.3, 1)`;
+
+    // add miniscule top padding if not already present, to prevent top margin collapse
+    document.body.style.paddingTop = ["", "0px"].includes(
+        document.body.style.paddingTop
+    )
+        ? "0.05px"
+        : document.body.style.paddingTop;
 
     createStylesheetLink(
         browser.runtime.getURL("/contents/pageview/content.css")

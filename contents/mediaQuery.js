@@ -6,6 +6,10 @@ import {
 
 // insert styles that adjust media query CSS to the reduced page width
 export async function insertOverrideRules() {
+        // keep in sync with body width set via css
+    // ideally, update when page resizes (but that would require regenering the css)
+    const conditionScale = window.innerWidth / 800; // 1 / 0.5;
+
     const cssElems = [...document.getElementsByTagName("link")].filter(
         (elem) =>
             elem.rel === "stylesheet" && elem.className !== OVERRIDE_CLASSNAME
@@ -16,7 +20,7 @@ export async function insertOverrideRules() {
             const url = elem.href;
             // console.log(url);
             try {
-                const overrideCss = await getCssOverride(url, 1 / 0.6);
+                const overrideCss = await getCssOverride(url, conditionScale);
 
                 createStylesheetText(overrideCss);
                 disableStylesheet(elem);

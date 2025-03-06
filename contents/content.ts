@@ -8,7 +8,7 @@ chrome.runtime.onMessage.addListener(async (msg) => {
     console.log("ironman  Received message:", msg.type);
     switch (msg.type) {
         case "reader": {
-            toggleReaderMode();
+            await toggleReaderMode();
         }
         case "default": {
             console.log("ironman default case");
@@ -51,7 +51,7 @@ async function disableReaderMode() {
     // immediately hide
     document.body.classList.remove("pageview");
 
-    unPatchDocumentStyle();
+    await unPatchDocumentStyle();
     // removeSidebar();
 
     // removeAnnotationListener();
