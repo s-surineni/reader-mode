@@ -5,6 +5,7 @@ import { contentBlock, unContentBlock } from "./contentBlock";
 export const OVERRIDE_CLASSNAME = "rmode-document-override";
 
 export function patchDocumentStyle() {
+    insertBackground();
     insertPageViewStyle();
     insertOverrideRules();
     contentBlock();
@@ -35,17 +36,36 @@ function insertPageViewStyle() {
     createStylesheetLink(
         browser.runtime.getURL("/contents/pageview/content.css")
     );
+}
 
+function insertBackground() {
     // create element of full height of all children, in case body height != content height
-    // TODO update this height on page update
     var background = document.createElement("div");
-    background.className = `${OVERRIDE_CLASSNAME} rmode-body-background`;
-    background.style.height = `${document.body.scrollHeight}px`;
-    // const siteBackground = window.getComputedStyle(document.body).background;
-    // el.style.background = siteBackground.includes("rgba(0, 0, 0, 0)")
-    //     ? "white"
-    //     : siteBackground;
+    background.id = RMODE_BACKGROUND_CLASS;
+    background.className = `${OVERRIDE_CLASSNAME} ${RMODE_BACKGROUND_CLASS}`;
+    const siteBackground = window.getComputedStyle(document.body).background;
+    background.style.background = siteBackground.includes("rgba(0, 0, 0, 0)")
+        ? "white"
+        : siteBackground;
     document.body.appendChild(background);
+
+    // update height after style fixes are done
+    // TODO use MutationObserver or setTimeout(, 0) after style changes inserted?
+    setTimeout(updateBackgroundHeight, 3000);
+}
+
+const RMODE_BACKGROUND_CLASS = "rmode-body-background";
+function updateBackgroundHeight() {
+    // get height of body children to exclude background element itself
+    // TODO exclude absolute positioned elements?
+    const childHeights = [...document.body.children]
+        .filter((node) => node.id !== RMODE_BACKGROUND_CLASS)
+        .map((node) => node.scrollHeight);
+
+    const bodyHeigth = childHeights.reduce((sum, height) => sum + height, 0);
+
+    const background = document.getElementById(RMODE_BACKGROUND_CLASS);
+    background.style.height = `${bodyHeigth}px`;
 }
 
 export function createStylesheetLink(url) {
