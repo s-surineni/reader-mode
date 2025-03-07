@@ -1,27 +1,55 @@
+import axios from "axios";
 import { getCssOverride } from "./cssTweaks";
 import { 
     createStylesheetText,
     OVERRIDE_CLASSNAME 
 } from "./styleChanges";
+const proxyUrl = "https://annotations.lindylearn.io/proxy";
 
 // insert styles that adjust media query CSS to the reduced page width
 export async function insertOverrideRules() {
         // keep in sync with body width set via css
     // ideally, update when page resizes (but that would require regenering the css)
-    const conditionScale = window.innerWidth / 800; // 1 / 0.5;
+    const conditionScale = window.innerWidth / 750; // 1 / 0.5;
 
-    const cssElems = [...document.getElementsByTagName("link")].filter(
+    const cssElems = [
+        ...document.getElementsByTagName("link"),
+        ...document.getElementsByTagName("style"),
+    ]
+    .filter(
         (elem) =>
-            elem.rel === "stylesheet" && elem.className !== OVERRIDE_CLASSNAME
-    );
+            elem.tagName === "STYLE" ||
+            (elem.tagName === "LINK" &&
+                elem.rel === "stylesheet" &&
+                elem.media !== "print") // to be correct, we should parse this media query
+    )
+        .filter((elem) => elem.className !== overrideClassname);
 
     await Promise.all(
         cssElems.map(async (elem) => {
-            const url = elem.href;
-            // console.log(url);
+            const url = elem.href || window.location.href;
             try {
-                const overrideCss = await getCssOverride(url, conditionScale);
+                let cssText;
+                if (elem.tagName === "LINK") {
+                    const response = await axios.get(
+                        `${proxyUrl}/${encodeURIComponent(url)}`,
+                        {
+                            responseType: "blob",
+                        }
+                    );
+                    cssText = await response.data.text();
+                } else {
+                    cssText = elem.innerHTML;
+                }
+                if (!cssText) {
+                    return;
+                }
 
+                const overrideCss = await getCssOverride(
+                    url,
+                    cssText,
+                    conditionScale
+                );
                 createStylesheetText(overrideCss);
                 disableStylesheet(elem);
             } catch (err) {
