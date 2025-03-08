@@ -1,13 +1,15 @@
 import browser from "webextension-polyfill";
-import { insertOverrideRules, removeOverrideRules } from "./mediaQuery";
+import { removeOverrideRules } from "./mediaQuery";
 import { contentBlock, unContentBlock } from "./contentBlock";
+
+const RMODE_BACKGROUND_CLASS = "rmode-body-background";
 
 export const OVERRIDE_CLASSNAME = "rmode-document-override";
 
 export function patchDocumentStyle() {
     insertBackground();
     insertPageViewStyle();
-    insertOverrideRules();
+    // insertOverrideRules();
     contentBlock();
 }
 
@@ -41,7 +43,6 @@ function insertPageViewStyle() {
     )
         ? "0.05px"
         : document.body.style.paddingTop;
-
     createStylesheetLink(
         browser.runtime.getURL("/contents/pageview/content.css")
     );
@@ -52,10 +53,21 @@ function insertBackground() {
     var background = document.createElement("div");
     background.id = RMODE_BACKGROUND_CLASS;
     background.className = `${OVERRIDE_CLASSNAME} ${RMODE_BACKGROUND_CLASS}`;
-    const siteBackground = window.getComputedStyle(document.body).background;
-    background.style.background = siteBackground.includes("rgba(0, 0, 0, 0)")
-        ? "white"
-        : siteBackground;
+
+    // get page background to use
+    const htmlBackground = window.getComputedStyle(
+        document.documentElement
+    ).background;
+    const bodyBackground = window.getComputedStyle(document.body).background;
+    let backgroundColor;
+    if (bodyBackground && !bodyBackground.includes("rgba(0, 0, 0, 0)")) {
+        backgroundColor = bodyBackground;
+    } else if (htmlBackground && !htmlBackground.includes("rgba(0, 0, 0, 0)")) {
+        backgroundColor = htmlBackground;
+    } else {
+        backgroundColor = "white";
+    }
+    background.style.background = backgroundColor;
     document.body.appendChild(background);
 
     // update height after style fixes are done
@@ -63,7 +75,6 @@ function insertBackground() {
     setTimeout(updateBackgroundHeight, 3000);
 }
 
-const RMODE_BACKGROUND_CLASS = "rmode-body-background";
 function updateBackgroundHeight() {
     // get height of body children to exclude background element itself
     // TODO exclude absolute positioned elements?

@@ -1,9 +1,17 @@
-html {
-	background-color: #f1f3f4 !important;
+html.pageview {
+    background-color: #f1f3f4 !important;
 }
 
-body {
-	position: relative;
+html.pageview > body {
+    /* animation properties are set inline */
+    position: relative;
+
+    width: 100%;
+    max-width: 800px !important;
+    margin: 20px auto !important;
+
+    border-radius: 10px !important;
+    overflow-x: hidden !important;
 }
 
 .rmode-body-background {
@@ -18,17 +26,17 @@ body {
     filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
         drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
 }
-
+/* removed in unclutter */
 body.pageview {
     width: 100%;
     max-width: 800px !important;
-	margin: 20px auto !important;
+    margin: 20px auto !important;
 
-	border-radius: 10px !important;
-	overflow-x: hidden !important;
+    border-radius: 10px !important;
+    overflow-x: hidden !important;
 }
 
-.rmode-sidebar {
+/* .rmode-sidebar {
     position: absolute;
     top: 0;
     left: calc(100% + 20px);
@@ -45,4 +53,4 @@ body.pageview {
         filter: drop-shadow(0 10px 8px rgb(255 255 255 / 0.04))
             drop-shadow(0 4px 3px rgb(255 255 255 / 0.1));
     }
-}
+} */
