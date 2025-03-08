@@ -1,7 +1,10 @@
 html.pageview {
     background-color: #f1f3f4 !important;
 }
-
+/* temp add diff to unclutter */
+html {
+    background-color: #f1f3f4 !important;
+}
 html.pageview > body {
     /* animation properties are set inline */
     position: relative;

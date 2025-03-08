@@ -54,20 +54,10 @@ function insertBackground() {
     background.id = RMODE_BACKGROUND_CLASS;
     background.className = `${OVERRIDE_CLASSNAME} ${RMODE_BACKGROUND_CLASS}`;
 
-    // get page background to use
-    const htmlBackground = window.getComputedStyle(
-        document.documentElement
-    ).background;
-    const bodyBackground = window.getComputedStyle(document.body).background;
-    let backgroundColor;
-    if (bodyBackground && !bodyBackground.includes("rgba(0, 0, 0, 0)")) {
-        backgroundColor = bodyBackground;
-    } else if (htmlBackground && !htmlBackground.includes("rgba(0, 0, 0, 0)")) {
-        backgroundColor = htmlBackground;
-    } else {
-        backgroundColor = "white";
-    }
-    background.style.background = backgroundColor;
+    // const siteBackground = window.getComputedStyle(document.body).background;
+    // background.style.background = siteBackground.includes("rgba(0, 0, 0, 0)")
+    //     ? "white"
+    //     : siteBackground;
     document.body.appendChild(background);
 
     // update height after style fixes are done
