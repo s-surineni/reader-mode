@@ -5,7 +5,7 @@
 
 
 
-import { patchStylesheetNode } from "./mediaQuery";
+import { patchStylesheetNode } from "./patchStylesheets";
 import { OVERRIDE_CLASSNAME, patchDocumentStyle } from "./styleChanges";
 
 const excludedHosts = ["google.com", "news.ycombinator.com", "twitter.com"];
@@ -24,7 +24,7 @@ async function boot() {
 
     // base css is already injected, activate it by adding class
     // add to <html> element since <body> not contructed yet
-    // document.documentElement.classList.add("pageview");
+    document.documentElement.classList.add("pageview");
 
     // allow exiting pageview by clicking on background surrounding pageview (bare <html>)
     document.documentElement.onclick = (event) => {
@@ -57,7 +57,8 @@ async function boot() {
         );
     });
     observer.observe(document, { childList: true, subtree: true });
-    // document.addEventListener("DOMContentLoaded", (e) => observer.disconnect());
+    // executing site JS may add style elements, e.g. cookie banners. so wait a bit.
+    window.onload = (e) => setTimeout(observer.disconnect.bind(observer), 3000);
 
     document.onreadystatechange = function () {
         if (document.readyState === "interactive") {

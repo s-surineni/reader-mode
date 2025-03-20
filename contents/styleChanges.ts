@@ -1,5 +1,5 @@
 import browser from "webextension-polyfill";
-import { removeOverrideRules } from "./mediaQuery";
+import { removeOverrideRules } from "./patchStylesheets";
 import { contentBlock, unContentBlock } from "./contentBlock";
 
 const RMODE_BACKGROUND_CLASS = "rmode-body-background";

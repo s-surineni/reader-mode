@@ -5,6 +5,19 @@ import {
 } from "./styleChanges";
 const proxyUrl = "https://annotations.lindylearn.io/proxy";
 
+export async function patchStylesheets(newStylesheets) {
+    const newStylesheetsToPatch = newStylesheets.filter(
+        (sheet) =>
+            !sheet.disabled && sheet.ownerNode?.className !== overrideClassname
+    );
+    console.log(Date.now(), "newStylesheetsToPatch", newStylesheetsToPatch);
+
+    const conditionScale = window.innerWidth / 750;
+    newStylesheetsToPatch.map((sheet) =>
+        patchStylesheetNode(sheet.ownerNode, conditionScale)
+    );
+}
+
 // insert styles that adjust media query CSS to the reduced page width
 export async function patchStylesheetNode(elem, conditionScale) {
     const url = elem.href || window.location.href;
@@ -18,8 +31,16 @@ export async function patchStylesheetNode(elem, conditionScale) {
                 }
             );
             cssText = await response.data.text();
-        } else {
+        } else if (elem.innerHTML) {
             cssText = elem.innerHTML;
+        } else {
+            // stylesheet rules that were created through js
+            // which means they are accessible to us too
+
+            // TODO optimize this, don't do the parsing or at least rule splitting for js rules?
+            cssText = [...elem.sheet.cssRules]
+                .map((rule) => rule.cssText)
+                .join("\n");
         }
         if (!cssText) {
             return;
@@ -34,7 +55,7 @@ export async function patchStylesheetNode(elem, conditionScale) {
     }
 }
 
-export function removeOverrideRules() {
+export function unPatchStylesheets() {
     reenableOriginalStylesheets();
 }
 
